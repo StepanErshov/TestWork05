@@ -28,7 +28,7 @@ services:
       - web
     volumes:
       - .:/app
-    command: celery -A app.celery_worker.celery_app worker --loglevel=info
+    command: celery -A celery_app.celery_app worker --loglevel=info
 
   redis:
     image: redis:7-alpine
