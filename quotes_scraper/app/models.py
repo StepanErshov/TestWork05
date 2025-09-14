@@ -1,21 +1,21 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from typing import List, Optional, Any
 from datetime import datetime
 from bson import ObjectId
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema
 
-class PyObjectId(ObjectId):
+class PyObjectId:
     @classmethod
     def __get_pydantic_core_schema__(cls, _source_type, _handler):
-        return core_schema.no_info_after_validator_function(
+        return core_schema.general_after_validator_function(
             cls.validate,
             core_schema.str_schema(),
             serialization=core_schema.to_string_ser_schema(),
         )
 
     @classmethod
-    def validate(cls, v):
+    def validate(cls, v, _info):
         if not ObjectId.is_valid(v):
             raise ValueError("Invalid ObjectId")
         return ObjectId(v)
