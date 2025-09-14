@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - REDIS_URL=redis://redis:6379/0
+      - MONGO_DB_NAME=quotes_db
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  celery_worker:
+    build: .
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - REDIS_URL=redis://redis:6379/0
+      - MONGO_DB_NAME=quotes_db
+    depends_on:
+      - mongo
+      - redis
+      - web
+    volumes:
+      - .:/app
+    command: celery -A app.celery_worker.celery_app worker --loglevel=info
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=quotes_db
+
+volumes:
+  redis_data:
+  mongo_data:
