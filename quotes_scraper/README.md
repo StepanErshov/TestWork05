@@ -20,7 +20,7 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone <repository-url>
+git clone <[repository-url](https://github.com/StepanErshov/TestWork05/tree/main/quotes_scraper)>
 cd quotes_scraper
 ```
 2. Соберите и запустите контейнеры:
@@ -91,4 +91,5 @@ curl http://localhost:8000/quotes?author=Albert&tag=life
 ```bash
 docker-compose up --build
 ```
+
 3. Откройте браузер и перейдите по адресу http://localhost:8000/docs для доступа к документации API
