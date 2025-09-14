@@ -6,4 +6,4 @@ MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "quotes_db")
 
 client = AsyncIOMotorClient(MONGO_URL)
 database = client[MONGO_DB_NAME]
-quotes_collection = database.get_collection("quotes")
+quotes_collection = database.quotes
